@@ -83,7 +83,8 @@
 7115064197_hw2/
 ├── index.html                           # 核心 Web 應用程式 (整合 Glassmorphism + StatsUnlock 設計系統)
 ├── app.js                               # 前端非同步互動、即時推論與純前端 CRISP-DM 機器學習引擎
-├── model_data.js                        # 多問題回歸模型資料庫 (學生表現、50 Startups等)
+├── model_data.js                        # 多問題回歸模型資料庫 (學生表現 19 特徵、洪水機率 20 特徵)
+├── flood_prediction_data.csv            # Kaggle 洪水機率預測資料集 (20 特徵、20,000 筆)
 ├── dev_server.js                        # 零依賴 Node.js 輕量開發伺服器
 ├── StudentPerformanceFactors.csv        # Kaggle 學生考試成績原始資料集 (6,607 筆)
 ├── 7115064197_hw2.py                    # Python CRISP-DM 主分析程式 (Scikit-learn Pipeline)
