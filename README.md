@@ -7,14 +7,6 @@
 
 ---
 
-## 🌟 作業加分亮點功能完整實現
-
-| 加分項目 | 老師規定要件 | 本專案實作成果 | 達成狀態 |
-| :--- | :--- | :--- | :---: |
-| **加總分 +1 分** | **有下拉視窗呈現兩種 problem** | 頂部導覽列設有專屬「選擇題目 (Problem)」下拉選單，無縫切換 **Problem 1 (學生考試成績預測)** 與 **Problem 2 (50 Startups 獲利預測)**、Problem 3 (台積電 2330.TW) 及自訂資料集分析 | ✅ **100% 達成** |
-| **加總分 +2 分** | **可任意輸入 Dataset** (如 `https://raw.githubusercontent.com/Avik-Jain/100-Days-Of-ML-Code/master/datasets/50_Startups.csv`) | 內建「**任意資料集即時載入分析平台 (Arbitrary Dataset Live CRISP-DM Studio)**」，支援輸入任意公開 CSV 網址（預填官方範例）、選擇本機 CSV 檔案或貼上 CSV 文字，於純前端瀏覽器完成完整機器學習流程 | ✅ **100% 達成** |
-
----
 
 ## 🌐 線上展示與本機執行 (Web App & Live Demo)
 
@@ -58,7 +50,7 @@
 
 ---
 
-## 🚀 任意資料集即時載入分析平台 (+2分功能詳解)
+## 🚀 任意資料集即時載入分析平台 (Arbitrary Dataset Live CRISP-DM Studio)
 
 在 Web 介面的「Arbitrary Dataset Live CRISP-DM Studio」中，使用者可體驗純瀏覽器端打造的自動化機器學習流水線：
 1. **多元載入管道**：
