@@ -18,6 +18,8 @@
 
 ## 🌐 線上展示與本機執行 (Web App & Live Demo)
 
+* 🐙 **GitHub 專案儲存庫**：**[https://github.com/jiajun1014/Multiple-Linear-regression](https://github.com/jiajun1014/Multiple-Linear-regression)**
+* 🔗 **GitHub Pages 線上展示**：**[https://jiajun1014.github.io/Multiple-Linear-regression/](https://jiajun1014.github.io/Multiple-Linear-regression/)**
 * 🖥️ **本地快速預覽**：直接以瀏覽器開啟 `index.html`，或啟動輕量伺服器：
   ```bash
   node dev_server.js
