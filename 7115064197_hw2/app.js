@@ -374,49 +374,44 @@ function buildPredictorInputs(prob) {
     document.getElementById('selectParent').addEventListener('change', calculateLivePrediction);
     document.getElementById('selectIncome').addEventListener('change', calculateLivePrediction);
 
-  } else if (prob.id === '50_startups') {
+  } else if (prob.id === 'kaggle_flood') {
+    const floodFeats = Object.keys(prob.defaultInputs || {});
     container.innerHTML = `
-      <div class="input-group">
-        <div class="input-label-row">
-          <span>研發費用 R&D Spend ($)</span>
-          <span id="labelRD" style="color: var(--primary); font-family: 'Fira Code', monospace;">$100,000</span>
-        </div>
-        <input type="number" id="numRD" class="input-field" value="100000" min="0" max="250000" step="5000">
-        <input type="range" id="rangeRD" class="range-slider" value="100000" min="0" max="250000" step="5000">
-      </div>
-      <div class="input-group">
-        <div class="input-label-row">
-          <span>行銷費用 Marketing Spend ($)</span>
-          <span id="labelMkt" style="color: var(--primary); font-family: 'Fira Code', monospace;">$150,000</span>
-        </div>
-        <input type="number" id="numMkt" class="input-field" value="150000" min="0" max="500000" step="5000">
-        <input type="range" id="rangeMkt" class="range-slider" value="150000" min="0" max="500000" step="5000">
-      </div>
-      <div class="input-group">
-        <div class="input-label-row">
-          <span>行政管理費用 Administration ($)</span>
-          <span id="labelAdmin" style="color: var(--slate-500); font-family: 'Fira Code', monospace;">$120,000</span>
-        </div>
-        <input type="number" id="numAdmin" class="input-field" value="120000" min="0" max="250000" step="5000">
-        <input type="range" id="rangeAdmin" class="range-slider" value="120000" min="0" max="250000" step="5000">
-      </div>
-      <div class="input-group">
-        <div class="input-label-row">
-          <span>設立州別 State Location</span>
-        </div>
-        <select id="selectState" class="input-field">
-          <option value="California">California (基準項 Reference)</option>
-          <option value="New York">New York</option>
-          <option value="Florida">Florida</option>
-        </select>
-      </div>
+      <div style="max-height: 380px; overflow-y: auto; padding-right: 6px;" id="floodInputsGrid"></div>
+      <button id="btnResetFlood" class="btn-action-secondary" style="margin-top: 10px; width: 100%; font-size: 12px; justify-content: center;">
+        <i class="fa-solid fa-rotate-left"></i> 重設所有環境特徵為基準值 (5)
+      </button>
     `;
+    const grid = document.getElementById('floodInputsGrid');
+    floodFeats.forEach(feat => {
+      const val = prob.defaultInputs[feat] || 5;
+      const group = document.createElement('div');
+      group.className = 'input-group';
+      group.innerHTML = `
+        <div class="input-label-row">
+          <span style="font-size: 11.5px;">${feat}</span>
+          <span id="label_${feat}" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 12px;">${val}</span>
+        </div>
+        <input type="range" id="range_${feat}" class="range-slider" value="${val}" min="0" max="15" step="1" style="margin-top: 4px;">
+        <input type="number" id="num_${feat}" class="input-field" value="${val}" min="0" max="15" step="1" style="display: none;">
+      `;
+      grid.appendChild(group);
+      syncInput(`range_${feat}`, `num_${feat}`, `label_${feat}`, '');
+    });
 
-    syncInput('rangeRD', 'numRD', 'labelRD', '$');
-    syncInput('rangeMkt', 'numMkt', 'labelMkt', '$');
-    syncInput('rangeAdmin', 'numAdmin', 'labelAdmin', '$');
-    document.getElementById('selectState').addEventListener('change', calculateLivePrediction);
-
+    document.getElementById('btnResetFlood')?.addEventListener('click', () => {
+      floodFeats.forEach(feat => {
+        const elR = document.getElementById(`range_${feat}`);
+        const elN = document.getElementById(`num_${feat}`);
+        const elL = document.getElementById(`label_${feat}`);
+        if (elR && elN && elL) {
+          elR.value = 5;
+          elN.value = 5;
+          elL.textContent = '5';
+        }
+      });
+      calculateLivePrediction();
+    });
   } else if (prob.customFeatures) {
     // Dynamic generated inputs for custom dataset
     prob.customFeatures.forEach(f => {
@@ -513,41 +508,30 @@ function calculateLivePrediction() {
     `;
     return;
 
-  } else if (prob.id === '50_startups') {
-    const rd = parseFloat(document.getElementById('numRD')?.value) || 0;
-    const mkt = parseFloat(document.getElementById('numMkt')?.value) || 0;
-    const admin = parseFloat(document.getElementById('numAdmin')?.value) || 0;
-    const state = document.getElementById('selectState')?.value || 'California';
-
+  } else if (prob.id === 'kaggle_flood') {
     data.coefficients.forEach(c => {
       if (c.feature.includes('Intercept') || c.feature.includes('β₀')) {
         pred += c.coef;
-      } else if (c.feature === 'R&D Spend') {
-        pred += c.coef * rd;
-        usedFeatures.push(`R&D: +$${(c.coef * rd).toFixed(0)}`);
-      } else if (c.feature === 'Marketing Spend') {
-        pred += c.coef * mkt;
-        usedFeatures.push(`Marketing: +$${(c.coef * mkt).toFixed(0)}`);
-      } else if (c.feature === 'Administration') {
-        pred += c.coef * admin;
-        usedFeatures.push(`Admin: ${(c.coef * admin >= 0 ? '+' : '')}$${(c.coef * admin).toFixed(0)}`);
-      } else if (c.feature === 'State_Florida' && state === 'Florida') {
-        pred += c.coef * 1;
-        usedFeatures.push(`Florida: $${c.coef.toFixed(0)}`);
-      } else if (c.feature === 'State_New York' && state === 'New York') {
-        pred += c.coef * 1;
-        usedFeatures.push(`NY: $${c.coef.toFixed(0)}`);
+      } else {
+        const inputVal = parseFloat(document.getElementById(`range_${c.feature}`)?.value) || 5;
+        pred += c.coef * inputVal;
+        usedFeatures.push(`${c.feature}: +${(c.coef * inputVal).toFixed(4)}`);
       }
     });
 
-    document.getElementById('predOutputLabel').textContent = 'PREDICTED PROFIT (獲利預測)';
-    document.getElementById('predProfitOutput').textContent = '$' + pred.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const clampedRisk = Math.max(0, Math.min(1.0, pred));
+    const riskPct = (clampedRisk * 100).toFixed(1);
+    let riskLevel = clampedRisk > 0.65 ? '🔴 高度洪澇風險 (High Risk)' : (clampedRisk > 0.45 ? '🟡 中度警戒 (Moderate)' : '🟢 低風險安全期 (Safe)');
+
+    document.getElementById('predOutputLabel').textContent = 'PREDICTED FLOOD RISK (洪水機率)';
+    document.getElementById('predProfitOutput').textContent = `${clampedRisk.toFixed(4)} (${riskPct}%)`;
+    document.getElementById('predProfitOutput').style.color = clampedRisk > 0.65 ? '#ef4444' : (clampedRisk > 0.45 ? '#f59e0b' : '#10b981');
     document.getElementById('predFormulaNote').innerHTML = `
-      Active features: ${data.features.join(', ')}<br>
-      <span style="font-size: 11px; color: #cbd5e1;">(${usedFeatures.join(' | ')})</span>
+      <strong>${riskLevel}</strong><br>
+      推論公式：FloodProbability = ${data.coefficients[0].coef.toFixed(4)} + ∑ [ βᵢ × 特徵評分 ]<br>
+      <span style="font-size: 11px; color: #cbd5e1;">納入特徵：${data.features.length} 項 | 95% 預測誤差帶約 ±${(1.96 * data.rmse).toFixed(4)}</span>
     `;
     return;
-
   } else if (prob.customFeatures) {
     data.coefficients.forEach(c => {
       if (c.feature.includes('Intercept') || c.feature.includes('β₀')) {

@@ -41,12 +41,17 @@
 
 ---
 
-## 🏢 主題二 (Problem 2)：50 Startups 獲利預測與 5 大特徵演算法比較
+## 🌊 主題二 (Problem 2)：Kaggle 官方競賽洪水機率預測 (20 個連續特徵)
 
-* **資料來源**：[Avik Jain 100-Days-Of-ML / 50_Startups.csv](https://raw.githubusercontent.com/Avik-Jain/100-Days-Of-ML-Code/master/datasets/50_Startups.csv)
-* **預測目標**：`Profit`（新創公司獲利金額）
-* **比較演算法**：Lasso (L1)、Forward SFS (順向逐步)、RFE (遞迴消除)、ElasticNet (L1+L2)、Exhaustive Search (最佳子集)
-* **最佳平衡點 (Sweet Spot)**：$k = 2$（`R&D Spend` + `Marketing Spend`），測試 RMSE 為 **14,684.79**，符合奧坎剃刀原則。
+* **資料來源**：[Kaggle Playground Series Season 4 Episode 5 (Regression with a Flood Prediction Dataset)](https://www.kaggle.com/competitions/playground-series-s4e5)
+* **特徵數量**：**剛好 20 項連續數值特徵**（完全符合作業規定 $13 < 	ext{Features} < 40$ 與 $>13$ 特徵之限制）。
+* **預測目標**：`FloodProbability`（連續數值 0~1 洪澇災害風險機率）。
+* **比較特徵演算法**：Lasso (L1)、Forward SFS (順向逐步)、RFE (遞迴特徵消除)、ElasticNet (L1+L2)、Baseline Full OLS。
+* **評估結果**：
+  * **Global Full OLS (全部 20 特徵)**：$R^2 = 0.8505$、$\text{RMSE} = 0.0200$、$\text{MAE} = 0.0158$（全域最佳泛化效能）。
+  * **RFE (目標精簡 14 特徵)**：$R^2 = 0.5590$、$\text{RMSE} = 0.0344$。
+  * **順向逐步 SFS (選取 18 特徵)**：$R^2 = 0.7417$、$\text{RMSE} = 0.0263$。
+* **統計推論結論**：20 項環境因子彼此接近正交獨立（VIF 均落在 1.002~1.006，無多重共線性），且對防洪風險均有均勻顯著之正向貢獻。
 
 ---
 

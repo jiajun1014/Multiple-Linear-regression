@@ -1195,7 +1195,7 @@
           <span class="problem-selector-label"><i class="fa-solid fa-layer-group"></i> 選擇題目 (Problem):</span>
           <select id="problemSelectDropdown" class="problem-dropdown-select">
             <option value="student_performance" selected>🎓 Problem 1: 學生考試成績預測 (Student Performance Factors - 19 特徵)</option>
-            <option value="50_startups">🏢 Problem 2: 50 Startups 獲利預測 (多元線性回歸 - 5大特徵選取)</option>
+            <option value="kaggle_flood">🌊 Problem 2: Kaggle 洪水機率預測 (Flood Prediction - 20 特徵)</option>
             <option value="custom">🌐 任意資料集即時分析 (Arbitrary Dataset CSV Explorer & Studio)</option>
             </select>
         </div>
@@ -1249,8 +1249,11 @@
 
       <div class="presets-row">
         <span><i class="fa-solid fa-bookmark"></i> 範例快捷選取 (Presets):</span>
+        <button class="preset-chip" data-url="flood_prediction_data.csv">
+          <i class="fa-solid fa-water"></i> Kaggle 洪水機率預測 (20 特徵競賽公開資料)
+        </button>
         <button class="preset-chip" data-url="https://raw.githubusercontent.com/Avik-Jain/100-Days-Of-ML-Code/master/datasets/50_Startups.csv">
-          <i class="fa-solid fa-building"></i> 50 Startups (Avik Jain 官方指定加分範例)
+          <i class="fa-solid fa-building"></i> 50 Startups (Avik Jain 範例)
         </button>
         <button class="preset-chip" data-url="StudentPerformanceFactors.csv">
           <i class="fa-solid fa-graduation-cap"></i> 學生表現 (Student Performance Factors)
